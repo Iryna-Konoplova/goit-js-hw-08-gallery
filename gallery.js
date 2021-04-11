@@ -1,23 +1,44 @@
 import gallery from './gallery-items.js';
-console.log(gallery);
 
+
+const galleryContainer = document.querySelector('.js-gallery');
+const galleryMarkup = createGalleryItemMarkup(gallery);
+
+galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
+
+galleryContainer.addEventListener('click', onGalleryContainerClick)
 
 function createGalleryItemMarkup(gallery) {
-    
-    `
+  return gallery.map(({ preview, original, description }) => {
+    return `
        <li class="gallery__item">
   <a
     class="gallery__link"
-    href="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
+    href="${original}"
   >
     <img
       class="gallery__image"
-      src="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546__340.jpg"
-      data-source="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-      alt="Tulips"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
     />
   </a>
-</li>
-    
+</li> 
     `
+  })
+    .join('');
+    
+  return markup;
+}
+
+function onGalleryContainerClick(evt) {
+  if (!evt.target.classList('gallery__image')) {
+    return;
+  }
+
+  // const swatchEl = evt.target;
+  // swatchEl.classList.add()
+
+  return evt.target.dataset.source;
+  
 }
