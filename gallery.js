@@ -1,4 +1,4 @@
-import gallery from './gallery-items.js';
+// import gallery from './gallery-items.js';
 
 
 const galleryContainer = document.querySelector('.js-gallery');
@@ -36,9 +36,14 @@ function onGalleryContainerClick(evt) {
     return;
   }
 
-  // const swatchEl = evt.target;
-  // swatchEl.classList.add()
+  const modalOpen = evt.target.closest('.lightbox');
+  modalOpen.classList.add('is-open');
 
-  return evt.target.dataset.source;
+  const modalImage = document.querySelector('.lightbox__image');
+  modalImage.src = "evt.target.dataset.source";
+  modalImage.alt = "evt.target.getAttribute('alt')";
+
+
+  console.log(evt.target.dataset.source);
   
 }
