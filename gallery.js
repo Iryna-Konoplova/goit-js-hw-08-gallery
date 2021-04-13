@@ -1,17 +1,26 @@
-// import gallery from './gallery-items.js';
+import galleryImages from './gallery-items.js';
 
 
 const galleryContainer = document.querySelector('.js-gallery');
-const galleryMarkup = createGalleryItemMarkup(gallery);
+const galleryElementsMarkup = createGalleryItemsMarkup(galleryImages)
 
-galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
+galleryContainer.insertAdjacentHTML('beforeend', galleryElementsMarkup)
 
-galleryContainer.addEventListener('click', onGalleryContainerClick)
+galleryContainer.addEventListener('click', onGalleryItemsClick)
 
-function createGalleryItemMarkup(gallery) {
-  return gallery.map(({ preview, original, description }) => {
+const buttonCloseModal = document.querySelector('.lightbox__button');
+buttonCloseModal.addEventListener('click', onButtonCloseModalClick)
+
+const ightboxOverlay = document.querySelector('.lightbox__overlay');
+ightboxOverlay.addEventListener('click', onButtonCloseModalClick)
+
+window.addEventListener('keydown', onCloseModalEscapeKeydown)
+
+function createGalleryItemsMarkup(galleryImages) {
+  return galleryImages
+    .map(({ preview, original, description }) => {
     return `
-       <li class="gallery__item">
+  <li class="gallery__item">
   <a
     class="gallery__link"
     href="${original}"
@@ -23,27 +32,45 @@ function createGalleryItemMarkup(gallery) {
       alt="${description}"
     />
   </a>
-</li> 
-    `
+</li>
+  `;
   })
     .join('');
-    
-  return markup;
 }
 
-function onGalleryContainerClick(evt) {
-  if (!evt.target.classList('gallery__image')) {
+function onGalleryItemsClick(evt) {
+  evt.preventDefault();
+  if (!evt.target.classList.contains('gallery__image')) {
     return;
   }
 
-  const modalOpen = evt.target.closest('.lightbox');
+  console.log(evt.target.dataset.source);
+
+  const modalOpen = document.querySelector('.js-lightbox');
   modalOpen.classList.add('is-open');
 
-  const modalImage = document.querySelector('.lightbox__image');
-  modalImage.src = "evt.target.dataset.source";
-  modalImage.alt = "evt.target.getAttribute('alt')";
-
-
-  console.log(evt.target.dataset.source);
-  
+  const imageModal = document.querySelector('.lightbox__image');
+  imageModal.src = evt.target.dataset.source;
+  imageModal.alt = evt.target.alt;
 }
+
+
+function onButtonCloseModalClick(evt) {
+   const modalOpen = document.querySelector('.js-lightbox');
+  modalOpen.classList.remove('is-open');
+
+   const imageModal = document.querySelector('.lightbox__image');
+  imageModal.src = '';
+  imageModal.alt = '';
+}
+
+// function onOverlayCloseModalClick(evt) {
+//   onButtonCloseModalClick();
+// }
+
+function onCloseModalEscapeKeydown(evt) {
+  if (evt.code === 'Escape') {
+    onButtonCloseModalClick();
+  }
+}
+
