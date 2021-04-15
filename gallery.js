@@ -3,16 +3,11 @@ import galleryImages from './gallery-items.js';
 
 const galleryContainer = document.querySelector('.js-gallery');
 const buttonCloseModal = document.querySelector('.lightbox__button');
-const ightboxOverlay = document.querySelector('.lightbox__overlay');
+const lightboxOverlay = document.querySelector('.lightbox__overlay');
 const imageModal = document.querySelector('.lightbox__image');
 const modalOpen = document.querySelector('.js-lightbox');
 
 galleryContainer.addEventListener('click', onGalleryItemsClick)
-buttonCloseModal.addEventListener('click', onButtonCloseModalClick)
-ightboxOverlay.addEventListener('click', onButtonCloseModalClick)
-window.addEventListener('keydown', onCloseModalEscapeKeydown)
-document.addEventListener('keydown', onArrowKeyPressAddSrc);
-document.addEventListener('keydown', onArrowKeyPressAddDescription);
 
 const arrayOriginalImages = galleryImages.map(galleryImage => galleryImage.original);
 const arrayDescriptionImages = galleryImages.map(galleryImage => galleryImage.description);
@@ -53,8 +48,11 @@ function onGalleryItemsClick(evt) {
   imageModal.src = evt.target.dataset.source;
   imageModal.alt = evt.target.alt;
 
-  onArrowKeyPressAddSrc();
-  onArrowKeyPressAddDescription();
+  buttonCloseModal.addEventListener('click', onButtonCloseModalClick)
+  lightboxOverlay.addEventListener('click', onButtonCloseModalClick)
+  window.addEventListener('keydown', onCloseModalEscapeKeydown)
+  document.addEventListener('keydown', onArrowKeyPressAddSrc);
+  document.addEventListener('keydown', onArrowKeyPressAddDescription);
 }
 
 function onButtonCloseModalClick(evt) {
