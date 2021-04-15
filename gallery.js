@@ -7,22 +7,18 @@ const ightboxOverlay = document.querySelector('.lightbox__overlay');
 const imageModal = document.querySelector('.lightbox__image');
 const modalOpen = document.querySelector('.js-lightbox');
 
-const arrayOriginalImages = galleryImages.map(galleryImage => galleryImage.original);
+galleryContainer.addEventListener('click', onGalleryItemsClick)
+buttonCloseModal.addEventListener('click', onButtonCloseModalClick)
+ightboxOverlay.addEventListener('click', onButtonCloseModalClick)
+window.addEventListener('keydown', onCloseModalEscapeKeydown)
+document.addEventListener('keydown', onArrowKeyPressAddSrc);
+document.addEventListener('keydown', onArrowKeyPressAddDescription);
 
+const arrayOriginalImages = galleryImages.map(galleryImage => galleryImage.original);
 const arrayDescriptionImages = galleryImages.map(galleryImage => galleryImage.description);
 
 const galleryElementsMarkup = createGalleryItemsMarkup(galleryImages)
 galleryContainer.insertAdjacentHTML('beforeend', galleryElementsMarkup)
-
-
-galleryContainer.addEventListener('click', onGalleryItemsClick)
-
-buttonCloseModal.addEventListener('click', onButtonCloseModalClick)
-
-ightboxOverlay.addEventListener('click', onButtonCloseModalClick)
-
-window.addEventListener('keydown', onCloseModalEscapeKeydown)
-
 
 function createGalleryItemsMarkup(galleryImages) {
   return galleryImages
@@ -56,6 +52,9 @@ function onGalleryItemsClick(evt) {
 
   imageModal.src = evt.target.dataset.source;
   imageModal.alt = evt.target.alt;
+
+  onArrowKeyPressAddSrc();
+  onArrowKeyPressAddDescription();
 }
 
 function onButtonCloseModalClick(evt) {
@@ -71,7 +70,7 @@ function onCloseModalEscapeKeydown(evt) {
   }
 }
 
-document.addEventListener('keydown', evt => {
+function onArrowKeyPressAddSrc(evt) {
   let newIndex = arrayOriginalImages.indexOf(imageModal.src);
   if (newIndex < 0) {
     return;
@@ -88,10 +87,10 @@ document.addEventListener('keydown', evt => {
     }
   }
   imageModal.src = arrayOriginalImages[newIndex];
-});
+};
 
-document.addEventListener('keydown', evt => {
-  let newIndex = arrayDescriptionImages.indexOf(imageModal.alt);
+function onArrowKeyPressAddDescription(evt) {
+    let newIndex = arrayDescriptionImages.indexOf(imageModal.alt);
   if (newIndex < 0) {
     return;
   }
@@ -106,5 +105,5 @@ document.addEventListener('keydown', evt => {
       newIndex = 0;
     }
   }
-  imageModal.alt = arrayDescriptionImages[newIndex];
-});
+  imageModal.alt = arrayDescriptionImages[newIndex]
+};
